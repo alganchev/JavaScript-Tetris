@@ -1,0 +1,6 @@
+c:\users\alexander\documents\visual studio 2013\Projects\gitProject\gitProject\bin\gitProject.dll.config
+c:\users\alexander\documents\visual studio 2013\Projects\gitProject\gitProject\bin\gitProject.dll
+c:\users\alexander\documents\visual studio 2013\Projects\gitProject\gitProject\bin\gitProject.pdb
+c:\users\alexander\documents\visual studio 2013\Projects\gitProject\gitProject\obj\Debug\gitProject.csprojResolveAssemblyReference.cache
+c:\users\alexander\documents\visual studio 2013\Projects\gitProject\gitProject\obj\Debug\gitProject.dll
+c:\users\alexander\documents\visual studio 2013\Projects\gitProject\gitProject\obj\Debug\gitProject.pdb
