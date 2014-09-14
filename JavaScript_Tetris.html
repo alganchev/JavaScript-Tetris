@@ -1,0 +1,581 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>JavaScript Tetris</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            display: inline-block;
+            float: left;
+            margin: 20px;
+            width: 300px;
+            border: 3px solid black;
+        }
+
+            #container div {
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+                margin-bottom: -5px;
+                box-sizing: border-box;
+                border: 1px solid white;
+                border-radius: 5px;
+            }
+
+        #score-board {
+            margin: 20px 0px;
+            float: left;
+        }
+
+            #score-board div {
+                margin-bottom: 20px;
+                width: 150px;
+                padding: 5px;
+                border: 3px solid black;
+                font-size: 1.2em;
+                font-family: Arial, sans-serif;
+            }
+
+        #pause-div {
+            height: 57px;
+            text-align: center;
+        }
+
+            #pause-div:hover {
+                cursor: pointer;
+            }
+
+        #new-game {
+            display: none;
+            height: 57px;
+            text-align: center;
+        }
+
+            #new-game:hover {
+                cursor: pointer;
+            }
+
+        #score,
+        #level,
+        #pause-fill {
+            font-size: 1.5em;
+        }
+
+        .game-over {
+            -webkit-filter: blur(2px);
+            -moz-filter: blur(2px);
+            -o-filter: blur(2px);
+            -ms-filter: blur(2px);
+            filter: blur(2px);
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id='0,0'></div><div id='0,1'></div><div id='0,2'></div><div id='0,3'></div><div id='0,4'></div><div id='0,5'></div><div id='0,6'></div><div id='0,7'></div><div id='0,8'></div><div id='0,9'></div>
+        <div id='1,0'></div><div id='1,1'></div><div id='1,2'></div><div id='1,3'></div><div id='1,4'></div><div id='1,5'></div><div id='1,6'></div><div id='1,7'></div><div id='1,8'></div><div id='1,9'></div>
+        <div id='2,0'></div><div id='2,1'></div><div id='2,2'></div><div id='2,3'></div><div id='2,4'></div><div id='2,5'></div><div id='2,6'></div><div id='2,7'></div><div id='2,8'></div><div id='2,9'></div>
+        <div id='3,0'></div><div id='3,1'></div><div id='3,2'></div><div id='3,3'></div><div id='3,4'></div><div id='3,5'></div><div id='3,6'></div><div id='3,7'></div><div id='3,8'></div><div id='3,9'></div>
+        <div id='4,0'></div><div id='4,1'></div><div id='4,2'></div><div id='4,3'></div><div id='4,4'></div><div id='4,5'></div><div id='4,6'></div><div id='4,7'></div><div id='4,8'></div><div id='4,9'></div>
+        <div id='5,0'></div><div id='5,1'></div><div id='5,2'></div><div id='5,3'></div><div id='5,4'></div><div id='5,5'></div><div id='5,6'></div><div id='5,7'></div><div id='5,8'></div><div id='5,9'></div>
+        <div id='6,0'></div><div id='6,1'></div><div id='6,2'></div><div id='6,3'></div><div id='6,4'></div><div id='6,5'></div><div id='6,6'></div><div id='6,7'></div><div id='6,8'></div><div id='6,9'></div>
+        <div id='7,0'></div><div id='7,1'></div><div id='7,2'></div><div id='7,3'></div><div id='7,4'></div><div id='7,5'></div><div id='7,6'></div><div id='7,7'></div><div id='7,8'></div><div id='7,9'></div>
+        <div id='8,0'></div><div id='8,1'></div><div id='8,2'></div><div id='8,3'></div><div id='8,4'></div><div id='8,5'></div><div id='8,6'></div><div id='8,7'></div><div id='8,8'></div><div id='8,9'></div>
+        <div id='9,0'></div><div id='9,1'></div><div id='9,2'></div><div id='9,3'></div><div id='9,4'></div><div id='9,5'></div><div id='9,6'></div><div id='9,7'></div><div id='9,8'></div><div id='9,9'></div>
+        <div id='10,0'></div><div id='10,1'></div><div id='10,2'></div><div id='10,3'></div><div id='10,4'></div><div id='10,5'></div><div id='10,6'></div><div id='10,7'></div><div id='10,8'></div><div id='10,9'></div>
+        <div id='11,0'></div><div id='11,1'></div><div id='11,2'></div><div id='11,3'></div><div id='11,4'></div><div id='11,5'></div><div id='11,6'></div><div id='11,7'></div><div id='11,8'></div><div id='11,9'></div>
+        <div id='12,0'></div><div id='12,1'></div><div id='12,2'></div><div id='12,3'></div><div id='12,4'></div><div id='12,5'></div><div id='12,6'></div><div id='12,7'></div><div id='12,8'></div><div id='12,9'></div>
+        <div id='13,0'></div><div id='13,1'></div><div id='13,2'></div><div id='13,3'></div><div id='13,4'></div><div id='13,5'></div><div id='13,6'></div><div id='13,7'></div><div id='13,8'></div><div id='13,9'></div>
+        <div id='14,0'></div><div id='14,1'></div><div id='14,2'></div><div id='14,3'></div><div id='14,4'></div><div id='14,5'></div><div id='14,6'></div><div id='14,7'></div><div id='14,8'></div><div id='14,9'></div>
+        <div id='15,0'></div><div id='15,1'></div><div id='15,2'></div><div id='15,3'></div><div id='15,4'></div><div id='15,5'></div><div id='15,6'></div><div id='15,7'></div><div id='15,8'></div><div id='15,9'></div>
+        <div id='16,0'></div><div id='16,1'></div><div id='16,2'></div><div id='16,3'></div><div id='16,4'></div><div id='16,5'></div><div id='16,6'></div><div id='16,7'></div><div id='16,8'></div><div id='16,9'></div>
+        <div id='17,0'></div><div id='17,1'></div><div id='17,2'></div><div id='17,3'></div><div id='17,4'></div><div id='17,5'></div><div id='17,6'></div><div id='17,7'></div><div id='17,8'></div><div id='17,9'></div>
+    </div>
+    <script>
+        /*** Array magazine
+         *
+         *    Holds the predefined figures, represented by matrixes with 1 and 0 and a separate color for each figure.
+         */
+        var magazine = {
+            1: [[[1, 1, 0],
+                 [1, 0, 0],
+                 [1, 0, 0]], ["blue"]],
+            2: [[[0, 1, 1],
+                 [0, 0, 1],
+                 [0, 0, 1]], ["orange"]],
+            3: [[[0, 1, 0],
+                 [0, 1, 1],
+                 [0, 1, 0]], ["purple"]],
+            4: [[[0, 1, 1],
+                 [1, 1, 0],
+                 [0, 0, 0]], ["green"]],
+            5: [[[1, 1, 0],
+                 [0, 1, 1],
+                 [0, 0, 0]], ["red"]],
+            6: [[[0, 0, 1, 0],
+                 [0, 0, 1, 0],
+                 [0, 0, 1, 0],
+                 [0, 0, 1, 0]], ["DarkTurquoise"]],
+            7: [[[1, 1],
+                 [1, 1]], ["lime"]]
+        }
+        /*** Object Playboard
+         *
+         *      Properties:     Playboard.matrix        - a 18x10 matrix, each cell corresponds to a div in the HTML page.
+         *
+         *      Methods:        Playboard.display()     - goes through all cells. If 0 sets <div> color to white, if 1 sets Figure.color
+         *                      Playboard.add()         - set a specific cell to 1
+         *                      Playboard.remove()      - set a specific cell to 0
+         *                      Playboard.checkForRows  - check whether a row is all 1es. If yes, remove it an shift all upper rows one position down
+         *                      Playboard.gameOver      - fills the whole playboard with the current color and displays it
+         */
+        var Playboard = {
+            matrix: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+
+            display: function () {
+                for (var i = 0; i < this.matrix.length; i++) {
+                    for (var j = 0; j < 10; j++) {
+                        var id = i + "," + j;
+                        if (this.matrix[i][j] === 1) {
+                            document.getElementById(id).style.background = Figure.color;
+                        } else if (this.matrix[i][j] === 2) {
+                            //do nothing
+                        } else {
+                            document.getElementById(id).style.background = "white";
+                        }
+                    }
+                }
+            },
+
+            add: function (row, index) {
+                this.matrix[row][index] = 1;
+            },
+
+            remove: function (row, index) {
+                this.matrix[row][index] = 0;
+            },
+
+            checkForRows: function () {
+                var fullRowsCount = 0;
+                for (var i = 0; i < this.matrix.length; i++) {
+                    var isFull = true;
+                    for (var j = 0; j < 10; j++) {
+                        if (this.matrix[i][j] !== 2) {
+                            isFull = false;
+                        }
+                    }
+                    if (isFull) {
+                        fullRowsCount += 1;
+                        for (var k = 0; k < 10; k++) {
+                            this.remove(i, k);
+                        }
+                        for (var l = i; l > 0; l--) {
+                            for (var m = 0; m < 10; m++) {
+                                var color = document.getElementById(l - 1 + "," + m).style.background;
+                                Playboard.matrix[l][m] = Playboard.matrix[l - 1][m];
+                                document.getElementById(l + "," + m).style.background = color;
+                            }
+                        }
+                        for (var n = 0; n < 10; n++) {
+                            Playboard.matrix[0][n] = 0;
+                        }
+                        this.display();
+                    }
+                }
+
+                if (fullRowsCount > 0) {
+                    ScoreBoard.updateScore(fullRowsCount);
+                    ScoreBoard.updateLevel();
+                    ScoreBoard.adjustSpeed();
+                    ScoreBoard.display();
+                }
+            },
+
+            gameOver: function () {
+                document.getElementById("container").className = "game-over";
+                document.getElementById("pause-div").style.display = "none";
+                document.getElementById("new-game").style.display = "block";
+                controlsDisabled = true;
+            }
+        }
+
+        /*** Object Figure
+         *
+         *      Properties:     Figure.top    -   distance form top row
+         *                      Figure.left   -   distance form leftmost row
+         *                      Figure.speed  -   falling speed
+         *                      Figure.color  -   holds the color of the figure (HTML named color)
+         *                      Figure.matrix -   a matrix which holds the shape of the current figure represented by 1 and 0 (see magazine)
+         *
+         *      Methods:        Figure.newFigure() - new random figure
+         *                      Figure.put()       - puts a figure on Playboard.matrix (for example after its position changes)
+         *                      Figure.remove()    - remove a figure from Playboar.matrix (makes all positions = 0)
+         *                      Figure.moveRight() - check if can move, then move
+         *                      Figure.moveLeft()  - check if can move, then move
+         *                      Figure.moveDown()  - check if can move, then move. If cannot move - check for full rows and add new figure.
+         */
+
+        var Figure = {
+            top: 0,
+            left: 3,
+            speed: 1000,
+            color: "",
+            matrix: [],
+            /*** Method put()
+             *
+             *  picks one randfom figure (1-7) from the "magazine" array and then puts it on the Playboard
+            /***/
+            newFigure: function () {
+                var rand = Math.floor(Math.random() * 7 + 1); //random between 1 and 7
+                this.matrix = magazine[rand][0];
+                this.color = magazine[rand][1];
+
+                //check if the game is over - this means that the figure cannot be put on the
+                //Playboard beacuse the place is taken
+                for (var i = 0; i < this.matrix.length; i++) {
+                    for (var j = 0; j < this.matrix.length; j++) {
+                        if (this.matrix[i][j] === 1 && Playboard.matrix[i + this.top][j + this.left] === 2) {
+                            stop();
+                            Playboard.gameOver();
+                        }
+                    }
+                }
+
+                this.put();
+            },
+
+            // 1.adds the current figure to Playboard.matrix at coordinates "top","left" by setting the fields to 1
+            // 2.calls the "display" function of object "Playboard", so that the newly added figure is shown on the screen
+            put: function () {
+                for (var i = 0; i < this.matrix.length; i++) {
+                    for (var j = 0; j < this.matrix.length; j++) {
+                        if (this.matrix[i][j] === 1) {
+                            Playboard.add(i + this.top, j + this.left);
+                        }
+                    }
+                }
+                Playboard.display();
+            },
+            // Removes a figure from Playboard.matrix by setting the fields to 0
+            remove: function () {
+                for (var i = 0; i < this.matrix.length; i++) {
+                    for (var j = 0; j < this.matrix.length; j++) {
+                        if (this.matrix[i][j] === 1) {
+                            Playboard.remove(i + this.top, j + this.left);
+                        }
+                    }
+                }
+            },
+            //checks whether the figure can move right. If nothing is blocking the movement, the figure is shigted by one place
+            moveRight: function () {
+                var canMove = true;
+                for (var i = 0; i < this.matrix.length; i++) {
+                    for (var j = this.matrix.length - 1; j >= 0; j--) {
+                        if (this.matrix[i][j] === 1) {
+                            if (Playboard.matrix[i + this.top][j + this.left + 1] === 2 ||
+                             Playboard.matrix[i + this.top][j + this.left + 1] === undefined) {
+                                canMove = false;
+                            }
+                            break; //check only for the rightmost tile
+                        }
+                    }
+                }
+                if (canMove) {
+                    this.remove();
+                    this.left += 1;
+                    this.put();
+                    Playboard.display();
+                }
+            },
+
+            //checks whether the figure can move left. If nothing is blocking the movement, the figure is shigted by one place
+            moveLeft: function () {
+                var canMove = true;
+                for (var i = 0; i < this.matrix.length; i++) {
+                    for (var j = 0; j < this.matrix.length; j++) {
+                        if (this.matrix[i][j] === 1) {
+                            if (Playboard.matrix[i + this.top][j + this.left - 1] === 2 ||
+                             Playboard.matrix[i + this.top][j + this.left - 1] === undefined) {
+                                canMove = false;
+                            }
+                            break; //check only for the leftmost tile
+                        }
+                    }
+                }
+                if (canMove) {
+                    this.remove();
+                    this.left -= 1;
+                    this.put();
+                    Playboard.display();
+                }
+            },
+
+            //the method does the following
+            //1. Checks whether the figure can move down
+            //2. If canMove - shifts the figure one position down
+            //3. If canMove == flase this means the figure has hit the bottom or another figure underneath it
+            //   so Playboard.checkForRows() is called (to remove full rows if any) and then a new figure is added at the
+            //   top of the Playboard.
+            moveDown: function () {
+                var canMove = true;
+                for (var i = 0; i < this.matrix.length; i++) {
+                    for (var j = this.matrix.length - 1; j >= 0; j--) {
+                        if (this.matrix[j][i] === 1) {
+                            if (Playboard.matrix[j + this.top + 1] === undefined || //check only if the row exists
+                                Playboard.matrix[j + this.top + 1][i + this.left] === 2) {
+                                canMove = false;
+                            }
+                            break; //check only for downmost tile
+                        }
+                    }
+                }
+                if (canMove) {
+                    this.remove();
+                    this.top += 1;
+                    this.put();
+                    Playboard.display();
+                } else {
+                    //the figure cannot move down -> add it to the stack (change 1 to 2)
+                    for (var i = 0; i < this.matrix.length; i++) {
+                        for (var j = 0; j < this.matrix.length; j++) {
+                            if (this.matrix[i][j] === 1) {
+                                var row = i + this.top;
+                                var col = j + this.left;
+                                Playboard.matrix[row][col] = 2;
+                                document.getElementById(row + "," + col).style.background = this.color;
+                            }
+                        }
+                    }
+
+                    stop();  // those two are for the fall() function/ button. It changes the fall speed to 100ms when pressed
+                    start(); // and by start(); stop(); the falling speed is back to normal
+
+                    this.top = 0;
+                    this.left = 3;
+                    Playboard.checkForRows();
+                    this.newFigure();
+                }
+            },
+
+            // this method rotates the a figure using multiplication with a rotation matrix
+            // 1. A temporary matrix "result" is created, which stores the rotated figure
+            // 2. If any of the blocks of the rotated figure overlap with existing blocks "canRotate" is set to false
+            // 3. If "canRotate" is true the rotated figure is put on the playboard by calling "put()"
+            rotate: function () {
+                var canRotate = true;
+
+                if (this.matrix.length === 3) {
+                    var result = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+                    for (i = 0; i < this.matrix.length; i++) {
+                        for (j = 0; j < this.matrix.length; j++) {
+                            var x = (j - 1) * 1;
+                            var y = (i - 1) * (-1);
+                            result[x + 1][y + 1] = this.matrix[i][j];
+                        }
+                    }
+                } else if (this.matrix.length === 4) {
+                    var result = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+                    for (i = 0; i < this.matrix.length; i++) {
+                        for (j = 0; j < this.matrix.length; j++) {
+                            var x = j;
+                            var y = i;
+                            result[x][y] = this.matrix[i][j];
+                        }
+                    }
+                }
+
+                this.remove();
+
+                //Check whether a rotation is possible (no part of the rotated figure overlaps with other figures
+                //or goes outside the playing field)
+                for (var i = 0; i < result.length; i++) {
+                    for (var j = 0; j < result.length; j++) {
+                        if ((Playboard.matrix[i + this.top][j + this.left] === 2 ||
+                            Playboard.matrix[i + this.top][j + this.left] === undefined) &&
+                            result[i][j] === 1) {
+                            canRotate = false;
+                        }
+                    }
+                }
+                if (canRotate) {
+                    this.matrix = result;
+                    this.put();
+                } else {
+                    this.put();
+                }
+            }
+        }
+
+        /*** Object ScoreBoard
+        *
+        *      Properties:
+        *      Methods:
+        */
+        var ScoreBoard = {
+            score: 0,
+
+            level: 0,
+
+            updateScore: function (number) {
+                switch (number) {
+                    case 1: this.score += 100; break;
+                    case 2: this.score += 200; break;
+                    case 3: this.score += 400; break;
+                    case 4: this.score += 800; break;
+                }
+            },
+
+            adjustSpeed: function () {
+                var decrement = Math.floor(this.score / 1200) * 50;
+                if (Figure.speed > 50) {
+                    Figure.speed = 1000 - decrement;
+                }
+            },
+
+            updateLevel: function () {
+                var level = Math.floor(this.score / 1200);
+                this.level = level;
+            },
+
+            display: function () {
+                document.getElementById("score").innerHTML = this.score;
+                document.getElementById("level").innerHTML = this.level;
+            }
+        }
+        //set gameOver to false - this is a flag for disabling the key listeners when the game is over
+        var controlsDisabled = true;
+
+        //put the firs figure on the Playboard
+        Figure.newFigure();
+
+        //add key listener
+        var blocker = 0;
+        window.addEventListener("keydown", keyListener, false);
+        window.addEventListener("keyup", stopFalling, false);
+
+        //figures start falling at speed set in Figure.speed
+        function start() {
+            controlsDisabled = false;
+            Figure.interval = setInterval(function () { Figure.moveDown(); }, Figure.speed);
+        }
+
+        //fugures stop falling. To change speed - stop(); Figure.speed = newSpeed; start();
+        function stop() {
+            clearInterval(Figure.interval);
+        }
+
+        //starts a new game by reloading the page
+        function newGame() {
+            location.reload();
+        }
+
+        // called onclick, button "fall"
+        //sets the fall time to 100ms per row. Gets set back to normal after the figure hits the ground/ other figure.
+        function fall() {
+            stop();
+            Figure.interval = setInterval(function () { Figure.moveDown(); }, 50);
+        }
+
+        function pause() {
+            var p = document.getElementById("pause");
+            if (p.innerHTML === "Play") {
+                controlsDisabled = false;
+                start();
+                p.innerHTML = "Pause";
+            } else {
+                controlsDisabled = true;
+                stop();
+                p.innerHTML = "Play";
+            }
+        }
+
+        function keyListener(e) {
+            if (e.keyCode == 80) {
+                //80 = "p"
+                pause();
+            }
+            if (controlsDisabled === false) {
+                if (!e) {
+                    //for IE
+                    e = window.event;
+                }
+                if (e.keyCode == 37) {
+                    //keyCode 37 is left arrow
+                    Figure.moveLeft();
+                }
+                if (e.keyCode == 39) {
+                    //keyCode 39 is right arrow
+                    Figure.moveRight();
+                }
+                if (e.keyCode == 40) {
+                    if (blocker < 1) {
+                        fall();
+                        blocker++;
+                    }
+                }
+                if (e.keyCode == 38) {
+                    // keyCode 82 is "R"
+                    Figure.rotate();
+                }
+                if (e.keyCode == 32) {
+                    //keyCode 32 is space bar
+                    randomColor();
+                }
+            }
+        }
+
+        function stopFalling(e) {
+            if (controlsDisabled === false) {
+                if (e.keyCode == 40) {
+                    stop();
+                    start();
+                    blocker = 0;
+                }
+            }
+        }
+
+        function randomColor() {
+            var rand = Math.floor(Math.random() * 7 + 1); //random between 1 and 7
+            Figure.color = magazine[rand][1];
+            Playboard.display();
+        }
+    </script>
+    <div id="score-board">
+        <div>
+            <p>Score</p>
+            <p id="score">0</p>
+        </div>
+        <div>
+            <p>Level</p>
+            <p id="level">0</p>
+        </div>
+        <div id="pause-div" onclick="pause()">
+            <p id="pause">Play</p> <!-- &#9616;&#9616; -->
+        </div>
+        <div id="new-game" onclick="newGame()">
+            <p>New Game</p>
+        </div>
+    </div>
+</body>
+</html>
