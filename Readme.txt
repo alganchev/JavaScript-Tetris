@@ -10,3 +10,5 @@ RIGHT   - move right
 
 P		- pause
 SPACE	- change block color
+
+conflict change
