@@ -8,4 +8,5 @@ DOWN	- fall
 LEFT	- move left
 RIGHT   - move right
 
+P		- pause
 SPACE	- change block color
