@@ -7,3 +7,5 @@ UP		- rotate
 DOWN	- fall
 LEFT	- move left
 RIGHT   - move right
+
+SPACE	- change block color
