@@ -11,8 +11,5 @@ RIGHT   - move right
 P		- pause
 SPACE	- change block color
 
-<<<<<<< HEAD
-this is a conflict
-=======
-conflict change
->>>>>>> 8ab0d5d60d72135e7b31da5abde008e511f013b6
+conflict resolved
+
